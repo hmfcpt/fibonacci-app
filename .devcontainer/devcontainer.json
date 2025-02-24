@@ -1,0 +1,27 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+    "name": "Java and Node.js Development",
+    "context": "..",
+    "dockerFile": "Dockerfile",
+    "appPort": [8080, 3000],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "vmware.vscode-boot-dev-pack",
+                "esbenp.prettier-vscode",
+                "rvest.vs-code-prettier-eslint",
+                "yoavbls.pretty-ts-errors",
+                "dsznajder.es7-react-js-snippets"
+            ],
+            "settings": {
+                "java.home": "/usr/lib/jvm/java-17-openjdk-amd64",
+                "java.configuration.updateBuildConfiguration": "automatic",
+                "editor.formatOnSave": true,
+                "eslint.validate": ["javascript", "typescript"]
+            }
+        }
+    },
+    "remoteUser": "root"
+}
