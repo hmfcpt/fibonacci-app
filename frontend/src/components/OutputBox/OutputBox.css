@@ -1,0 +1,60 @@
+/* Container for result */
+.output-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 16px;
+}
+
+/* Label for result */
+.output-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* Output box */
+.output-box {
+  width: 100%;
+  max-width: 220px;
+  height: 60px;
+  background: #d1d1d1;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for result */
+.result-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Placeholder styling */
+.result-placeholder {
+  font-size: 20px;
+  font-weight: 400;
+  color: #777;
+}
+
+/* Loading Text Animation */
+.loading-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  animation: blink 1s infinite alternate;
+}
+
+/* Blinking effect for "Calculating..." */
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.4;
+  }
+}
