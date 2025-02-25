@@ -7,15 +7,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Update and install required packages
 RUN apt-get update && apt-get install -y \
     openjdk-17-jdk \        
-    nodejs \                
-    npm \                   
-    git \                   
     curl \                  
+    git \                  
     unzip \                 
     bash \                  
-    ca-certificates \      
+    ca-certificates \       
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js 20.x
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 
 # Set default shell to bash
 SHELL ["/bin/bash", "-c"]
