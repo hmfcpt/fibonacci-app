@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app-container {
+  text-align: center;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.fibonacci-image-container {
+  margin: 20px 0; /* Add margin for spacing */
+  display: flex;
+  justify-content: center;
+}
+
+.fibonacci-image {
+  width: 120px; /* Adjust size as needed */
+  height: 120px; /* Make height equal to width for a perfect circle */
+  border-radius: 50%; /* Makes the image circular */
+  border: 5px solid #2c3e50; /* Border color and thickness */
+  object-fit: cover; /* Ensures the image covers the circle */
+}
+
+.app-description {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #34495e;
+}

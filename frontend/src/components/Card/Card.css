@@ -1,0 +1,74 @@
+/* Card Styling */
+.card {
+  position: relative;
+  z-index: 3;
+  width: 90%;
+  max-width: 460px;
+  padding: 32px 30px;
+  background: white;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* Ensures uniform spacing between elements */
+}
+
+/* Card Header */
+.card-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  background: #226ce7;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Logo inside the header */
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid white;
+  background: white;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+/* Title */
+.card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 95px; /* Reduce spacing from header */
+  margin-bottom: 6px;
+  color: #333;
+}
+
+/* Description */
+.card h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #7f8c8d;
+  margin-bottom: 12px; /* Reduce spacing before input */
+}
+
+/* Input and Button Wrapper */
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px; /* Adjusts spacing between input & button */
+}

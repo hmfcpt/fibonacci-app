@@ -1,0 +1,35 @@
+.background {
+    position: fixed;
+    inset: 0;
+    background: #f1f5fb;
+  }
+  
+  .background::before,
+  .background::after {
+    content: "";
+    position: absolute;
+    border-radius: 47% 53% 61% 39% / 45% 51% 49% 55%;
+    width: 100vmin;
+    height: 100vmin;
+    animation: move 10s alternate infinite linear;
+  }
+  
+  .background::before {
+    top: -40vmin;
+    left: -50vmin;
+    background: #65c8ff;
+  }
+  
+  .background::after {
+    right: -50vmin;
+    bottom: -55vmin;
+    background: #2357ad;
+    animation-direction: alternate-reverse;
+  }
+  
+  @keyframes move {
+    100% {
+      transform: translateY(-120px);
+    }
+  }
+  
