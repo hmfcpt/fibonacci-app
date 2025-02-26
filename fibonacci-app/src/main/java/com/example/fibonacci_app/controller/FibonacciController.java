@@ -1,59 +1,62 @@
-package com.example.fibonacci_app.controller; // Defines the package for organization
+package com.example.fibonacci_app.controller;
 
+import com.example.fibonacci_app.service.FibonacciService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable; // Used for caching results
-import org.springframework.web.bind.annotation.*; // Import Spring annotations for REST API
+import org.springframework.web.bind.annotation.*;
 
-@RestController // Marks this class as a REST Controller (Handles HTTP Requests)
-@RequestMapping("/api/fibonacci") // Sets the base URL for this API
+import java.time.Duration;
+import java.time.Instant;
+
+/**
+ * REST Controller for handling Fibonacci API requests.
+ * It validates input, enforces a maximum index, and returns the formatted
+ * Fibonacci number.
+ */
+@RestController
+@RequestMapping("/api/fibonacci")
 public class FibonacciController {
 
-    // Logger to track requests and cache behavior
     private static final Logger logger = LoggerFactory.getLogger(FibonacciController.class);
+    private final FibonacciService fibonacciService;
 
     /**
-     * Handles GET requests to fetch the Fibonacci number of a given input.
-     * Example: GET http://localhost:8080/api/fibonacci/10 → Returns 55
-     * 
-     * @param number The input number for Fibonacci calculation.
-     * @return The Fibonacci number at position 'number'.
+     * Constructor-based Dependency Injection of FibonacciService.
+     *
+     * @param fibonacciService The service handling Fibonacci calculations.
      */
-    @GetMapping("/{number}") // Maps HTTP GET requests to this method
-    @Cacheable("fibonacciCache") // Caches the final result (only) to improve performance
-    public long getFibonacci(@PathVariable int number) {
-        // Check if the number is negative and return an error
-        if (number < 0) {
-            throw new IllegalArgumentException("Number must be non-negative.");
-        }
-
-        // Log when a Fibonacci number is being calculated
-        logger.info("Calculating Fibonacci for number: {}", number);
-        long result = calculateFibonacci(number);
-
-        // Log when a Fibonacci result is returned (either from cache or fresh
-        // calculation)
-        logger.info("Returning Fibonacci result: {} for number: {}", result, number);
-        return result;
+    public FibonacciController(FibonacciService fibonacciService) {
+        this.fibonacciService = fibonacciService;
     }
 
     /**
-     * Recursively calculates the Fibonacci number.
-     * Fibonacci sequence:
-     * - F(0) = 0
-     * - F(1) = 1
-     * - F(n) = F(n-1) + F(n-2)
-     * 
-     * @param n The Fibonacci sequence position.
-     * @return The Fibonacci number at position n.
+     * Handles GET requests to compute the Fibonacci number at a given index.
+     * The allowed range is 0 to 1,000,000.
+     *
+     * @param number The Fibonacci index (as an integer).
+     * @return The formatted Fibonacci number as a String.
      */
-    private long calculateFibonacci(int n) {
-        // Base cases: F(0) = 0, F(1) = 1
-        if (n <= 1) {
-            return n;
+    @GetMapping("/{number}")
+    public String getFibonacci(@PathVariable int number) {
+        // Validate input.
+        if (number < 0) {
+            throw new IllegalArgumentException("Number must be non-negative.");
+        }
+        if (number > 1_000_000) {
+            throw new IllegalArgumentException("Request too large. Please use values ≤ 1,000,000.");
         }
 
-        // Recursive formula: F(n) = F(n-1) + F(n-2)
-        return calculateFibonacci(n - 1) + calculateFibonacci(n - 2);
+        logger.info("Received request for Fibonacci({})", number);
+        Instant startTime = Instant.now();
+
+        // Compute Fibonacci number.
+        String formattedResult = fibonacciService.getFibonacci(number);
+
+        Instant endTime = Instant.now();
+        long durationMs = Duration.between(startTime, endTime).toMillis();
+        logger.info("Computed Fibonacci({}) in {} ms (Formatted result length: {})",
+                number, durationMs, formattedResult.length());
+
+        return formattedResult;
     }
 }
