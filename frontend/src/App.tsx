@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import Background from "./components/Background/Background";
-import Card from "./components/Card/Card";
+import { Background, Card } from "./components/layout";
 
 const App: React.FC = () => {
   return (

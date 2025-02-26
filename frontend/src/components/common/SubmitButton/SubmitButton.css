@@ -9,7 +9,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s;
-  margin-top: 10px; /* More spacing above the button */
+  margin-top: 10px;
 }
 
 .submit-button:hover {
