@@ -1,6 +1,7 @@
 package com.example.fibonacci_app.service;
 
 import com.example.fibonacci_app.util.FibonacciFormatter;
+import com.example.fibonacci_app.util.FibonacciPair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,9 @@ public class FibonacciService {
 
     private static final Logger logger = LoggerFactory.getLogger(FibonacciService.class);
 
-    // In-memory cache for intermediate Fibonacci values (key: index, value:
-    // Fibonacci number).
-    private final Map<Integer, BigInteger> memoizationCache = new ConcurrentHashMap<>();
+    // Memoization cache for storing Fibonacci pairs (key: index, value:
+    // FibonacciPair).
+    private final Map<Integer, FibonacciPair> memoizationCache = new ConcurrentHashMap<>();
 
     /**
      * Computes the Fibonacci number at the specified index n.
@@ -36,49 +37,46 @@ public class FibonacciService {
      * @param n The Fibonacci sequence index (0 ≤ n ≤ 1,000,000).
      * @return The formatted Fibonacci number as a String.
      */
-    @Cacheable("fibonacciCache") // Caches the final formatted result for each n.
+    @Cacheable("fibonacciCache") // Caches only the final result.
     public String getFibonacci(int n) {
-        // Validate input (should already be checked in the controller, but we validate
-        // here too).
         if (n < 0) {
             throw new IllegalArgumentException("Number must be non-negative.");
         }
         if (n == 0)
-            return BigInteger.ZERO.toString();
+            return "0";
         if (n == 1)
-            return BigInteger.ONE.toString();
+            return "1";
 
-        // Determine the highest cached index less than or equal to n.
-        int start = 2;
-        BigInteger prev = BigInteger.ZERO;
-        BigInteger curr = BigInteger.ONE;
+        // Start from F(1)
+        int start = 1;
+        BigInteger prev = BigInteger.ZERO; // F(0)
+        BigInteger curr = BigInteger.ONE; // F(1)
+
+        // Check cache for the highest available checkpoint <= n
         for (Integer cachedIndex : memoizationCache.keySet()) {
             if (cachedIndex <= n && cachedIndex > start) {
                 start = cachedIndex;
-                curr = memoizationCache.get(cachedIndex);
-                // If previous cached value is not available, default to zero.
-                prev = memoizationCache.getOrDefault(cachedIndex - 1, BigInteger.ZERO);
+                FibonacciPair pair = memoizationCache.get(cachedIndex);
+                prev = pair.getPrev();
+                curr = pair.getCurr();
             }
         }
 
-        // Log the starting index for computation.
         logger.info("Starting Fibonacci computation from cached index: {}", start);
 
-        // Compute Fibonacci iteratively from (start + 1) up to n.
+        // Compute iteratively from the checkpoint to n
         for (int i = start + 1; i <= n; i++) {
             BigInteger temp = curr.add(prev);
             prev = curr;
             curr = temp;
 
-            // Cache intermediate values every 10,000 steps.
+            // Cache intermediate values every 10,000 steps
             if (i % 10_000 == 0) {
-                memoizationCache.put(i, curr);
-                logger.info("Caching intermediate Fibonacci({})", i);
+                memoizationCache.put(i, new FibonacciPair(prev, curr));
+                logger.info("Caching Fibonacci index: F({}) and F({})", i - 1, i);
             }
         }
 
-        // Format the computed Fibonacci number so that its string representation does
-        // not exceed 14 characters.
         return FibonacciFormatter.formatResult(curr.toString());
     }
 }
